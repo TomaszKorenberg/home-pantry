@@ -1,0 +1,21 @@
+.wrapper{
+  margin-left: 25px;
+  padding: 0px;
+}
+
+.navItem{
+  display: inline-block;
+  list-style: none;
+  margin-right: 30px;
+
+  &Link{
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+
+    &Active{
+      font-weight: 700;
+      color: rgb(255,176,37);
+    }
+  }
+}
