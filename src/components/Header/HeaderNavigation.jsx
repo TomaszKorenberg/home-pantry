@@ -3,7 +3,7 @@ import styles from "./HeaderNavigation.module.scss";
 import {NavLink} from "react-router-dom";
 
 const HeaderNavigation = () => (
-    <nav>
+    <nav className={styles.navigation}>
         <ul className={styles.wrapper}>
             <li className={styles.navItem}>
                 <NavLink exact activeClassName={styles.navItemLinkActive} className={styles.navItemLink} to={"/"}>Moje produkty</NavLink>
@@ -11,6 +11,8 @@ const HeaderNavigation = () => (
             <li className={styles.navItem}>
                 <NavLink exact activeClassName={styles.navItemLinkActive} className={styles.navItemLink} to={"/shoppinglist"}>Lista zakupów</NavLink>
             </li>
+        </ul>
+        <ul>
             <li className={styles.navItem}>
                 <NavLink exact activeClassName={styles.navItemLinkActive} className={styles.navItemLink} to={"/settings"}>Ustawienia</NavLink>
             </li>
