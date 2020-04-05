@@ -1,8 +1,20 @@
 import React from "react";
-import styles from "./ShoppingListPage.module.scss";
+import AppContext from "../../context";
+import styles from "../DashboardPage/DashboardPage.module.scss";
+import ItemList from "../../components/ItemList/ItemList";
 
 const ShoppingListPage = () => (
-    <h2>ShoppingListPage</h2>
+    <AppContext.Consumer>
+        {(context) => (
+            <div className={styles.wrapper}>
+
+                <h2>Lista zakupów</h2>
+                <ItemList shoppingList={context.items}/>
+
+            </div>
+        )}
+
+    </AppContext.Consumer>
 );
 
 export default ShoppingListPage;

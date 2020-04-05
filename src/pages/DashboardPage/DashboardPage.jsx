@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./DashboardPage.module.scss";
-import ItemList from "./ItemList/ItemList";
+import ItemList from "../../components/ItemList/ItemList";
 import AppContext from "../../context";
 
 const DashboardPage = () => (

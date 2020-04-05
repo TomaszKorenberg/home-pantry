@@ -1,0 +1,26 @@
+.wrapper{
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translateX(-50%);
+  min-width:450px;
+  width: 40vw;
+  height: 150px;
+  background-color: rgb(60,63, 65);
+  box-shadow: 0px 0px 7px 1px rgb(255,176,37);
+}
+
+.button{
+  position:fixed;
+  margin: 0;
+  top: 5px;
+  left:95%;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+
+  &Icon{
+    width: 20px;
+    height: 20px;
+  }
+}

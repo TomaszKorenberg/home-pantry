@@ -7,21 +7,25 @@ import DashboardPage from "../DashboardPage/DashboardPage";
 import SettingsPage from "../SettingsPage/SettingsPage";
 import ShoppingListPage from "../ShoppingListPage/ShoppingListPage";
 import AppContext from "../../context";
+import Modal from "../../components/Modal/Modal";
 
 
 class Root extends React.Component {
 
     state = {
+        isModalOpen: false,
+        editItemData: null,
+        removeItemData: null,
         items: [
             {
                 name: "artykuł 1",
                 count: 2,
-                minCount: 2,
+                minCount: 1,
             },
             {
                 name: "artykuł 2",
                 count: 1,
-                minCount: 2,
+                minCount: 1,
             },
             {
                 name: "artykuł 3",
@@ -31,9 +35,35 @@ class Root extends React.Component {
         ]
     };
 
-    render() {
+    closeModal = () => {
+        this.setState({isModalOpen: false})
+    };
 
-        const context = {...this.state};
+    openModal = (editItem, removeItem) => {
+        this.setState({isModalOpen: true});
+        this.setState({editItemData: editItem});
+        this.setState({removeItemData: removeItem})
+
+    };
+
+    removeItem = (itemData) => {
+        console.log("Delete!");
+        console.log(itemData)
+        this.openModal(null, itemData)
+    };
+
+    updateItem = (itemData) => {
+        console.log("Update FN!!")
+    };
+
+    render() {
+        const {isModalOpen, editItemData, removeItemData} = this.state;
+        const context = {
+            ...this.state,
+            openModalFn: this.openModal,
+            removeItemFn: this.removeItem
+        };
+
         return (
             <BrowserRouter>
                 <AppContext.Provider value={context}>
@@ -44,6 +74,10 @@ class Root extends React.Component {
                         <Route path={"/shoppinglist"}><ShoppingListPage/></Route>
                     </Switch>
                     <Footer/>
+                    {isModalOpen && <Modal editItemData={editItemData}
+                                           removeItemData={removeItemData}
+                                           updateItem={this.updateItem}
+                                           closeModalFn={this.closeModal}/>}
                 </AppContext.Provider>
             </BrowserRouter>
         );
