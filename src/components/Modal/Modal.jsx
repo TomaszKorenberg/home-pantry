@@ -19,9 +19,7 @@ const Modal = ({closeModalFn, editItemData, removeItemData, addItemData, removeI
             </button>
 
             <br/>
-            <input/>
-            <input/>
-            <button onClick={() => (updateItemFn(editItemData))}>Aktualizuj</button>
+            <Form props={editItemData}/>
         </div>)
         }
         {removeItemData &&
@@ -35,12 +33,20 @@ const Modal = ({closeModalFn, editItemData, removeItemData, addItemData, removeI
             </button>
 
             <br/>
-            <button className={styles.buttonConfirm} onClick={() => removeItemFn(removeItemData)}>
-                <img className={styles.buttonConfirmIcon} src={confirmButton}/>
+            <div className={styles.buttonWrapper}>
+
+            <button className={styles.buttonConfirm}
+                    onClick={() => removeItemFn(removeItemData)}>
+                <img className={styles.buttonConfirmIcon}
+                     src={confirmButton}/>
             </button>
-            <button className={styles.buttonConfirm} onClick={closeModalFn}>
-                <img className={styles.button} src={cancelButton}/>
+
+            <button className={styles.buttonConfirm}
+                    onClick={closeModalFn}>
+                <img className={styles.buttonConfirmIcon}
+                     src={cancelButton}/>
             </button>
+            </div>
         </div>)}
 
         {addItemData && (

@@ -18,7 +18,7 @@ class Root extends React.Component {
         editItemData: null,
         removeItemData: null,
         addItemData: false,
-        items: JSON.parse(localStorage.getItem("items"))
+        items: localStorage.getItem("items") ? JSON.parse(localStorage.getItem("items")) : []
     };
 
     closeModal = () => {
@@ -47,62 +47,52 @@ class Root extends React.Component {
     };
 
     removeItem = (itemData) => {
-        this.openModal("remove", itemData);
-
         const items = JSON.parse(localStorage.getItem("items")).filter(item => item.name !== itemData.name);
         localStorage.setItem("items", JSON.stringify(items));
         this.setState({"items": items})
         this.closeModal();
     };
 
-    updateItem = (itemData) => {
+    updateItem = (e,itemData, newItemValues) => {
+        e.preventDefault();
         console.log("Update FN");
-        this.openModal("update", itemData)
+
+        const updateItemIndex = this.state.items.findIndex(key => key.name === itemData.name);
+        const updatedItem = [...this.state.items];
+        //console.log(updatedItem[updateItemIndex])
+
+        updatedItem[updateItemIndex] = {
+            name: !newItemValues ? itemData.name : newItemValues.name,
+            count: !newItemValues ? itemData.count : newItemValues.count,
+            minCount: !newItemValues ? itemData.minCount : newItemValues.minCount
+        }
+        //console.log(updatedItem[updateItemIndex])
+        console.log(itemData.name)
+        console.log(newItemValues.name)
+
+
+
+        //console.log(this.state.items[updateItemIndex])
+
+        // const updatedItems = [...this.state.items[updateItemIndex], itemData];
+
+        // this.setState(prevState => ({"items": updatedItems }));
+        // localStorage.setItem("items", JSON.stringify(updatedItems));
+        // this.closeModal();
+
 
     };
+
+
 
     addItem = (e, itemData) => {
         e.preventDefault();
-
-        this.setState((prevState) => {
-
-            //fixme: zmienic na ternary operator "!prevState ? "" : ...prevState.items," DRY!!!
-
-            if (prevState.items) {
-                localStorage.setItem("items", JSON.stringify([...prevState.items,
-                    {
-                        name: itemData.name,
-                        count: itemData.count,
-                        minCount: itemData.minCount,
-                    }]));
-
-                this.setState({
-                    "items": [...prevState.items,
-                        {
-                            name: itemData.name,
-                            count: itemData.count,
-                            minCount: itemData.minCount,
-                        }]
-                })
-            } else {
-                localStorage.setItem("items", JSON.stringify([
-                    {
-                        name: itemData.name,
-                        count: itemData.count,
-                        minCount: itemData.minCount,
-                    }]));
-                this.setState({
-                    "items": [...prevState.items,
-                        {
-                            name: itemData.name,
-                            count: itemData.count,
-                            minCount: itemData.minCount,
-                        }]
-                })
-            }
-        });
+        const updatedItems = [...this.state.items, itemData];
+        this.setState(prevState => ({"items": updatedItems }));
+        localStorage.setItem("items", JSON.stringify(updatedItems));
         this.closeModal();
     };
+
 
     render() {
         const {isModalOpen, editItemData, removeItemData, addItemData} = this.state;
@@ -123,7 +113,6 @@ class Root extends React.Component {
                         <Route path={"/settings"}><SettingsPage/></Route>
                         <Route path={"/shoppinglist"}><ShoppingListPage/></Route>
                     </Switch>
-                    <Footer/>
                     {isModalOpen && <Modal editItemData={editItemData}
                                            removeItemData={removeItemData}
                                            addItemData={addItemData}
