@@ -12,56 +12,106 @@ import Modal from "../../components/Modal/Modal";
 
 class Root extends React.Component {
 
+
     state = {
         isModalOpen: false,
         editItemData: null,
         removeItemData: null,
-        items: [
-            {
-                name: "artykuł 1",
-                count: 2,
-                minCount: 1,
-            },
-            {
-                name: "artykuł 2",
-                count: 1,
-                minCount: 1,
-            },
-            {
-                name: "artykuł 3",
-                count: 0,
-                minCount: 1,
-            }
-        ]
+        addItemData: false,
+        items: JSON.parse(localStorage.getItem("items"))
     };
 
     closeModal = () => {
-        this.setState({isModalOpen: false})
+        this.setState({
+            isModalOpen: false,
+            editItemData: null,
+            removeItemData: null,
+            addItemData: false
+        })
     };
 
-    openModal = (editItem, removeItem) => {
+    openModal = (task, itemData) => {
         this.setState({isModalOpen: true});
-        this.setState({editItemData: editItem});
-        this.setState({removeItemData: removeItem})
+        switch (task) {
+            case "update":
+                this.setState({editItemData: itemData});
+                break;
+            case "remove":
+                this.setState({removeItemData: itemData});
+                break;
+            case "add":
+                this.setState({addItemData: true});
+                break;
+        }
 
     };
 
     removeItem = (itemData) => {
-        console.log("Delete!");
-        console.log(itemData)
-        this.openModal(null, itemData)
+        this.openModal("remove", itemData);
+
+        const items = JSON.parse(localStorage.getItem("items")).filter(item => item.name !== itemData.name);
+        localStorage.setItem("items", JSON.stringify(items));
+        this.setState({"items": items})
+        this.closeModal();
     };
 
     updateItem = (itemData) => {
-        console.log("Update FN!!")
+        console.log("Update FN");
+        this.openModal("update", itemData)
+
+    };
+
+    addItem = (e, itemData) => {
+        e.preventDefault();
+
+        this.setState((prevState) => {
+
+            //fixme: zmienic na ternary operator "!prevState ? "" : ...prevState.items," DRY!!!
+
+            if (prevState.items) {
+                localStorage.setItem("items", JSON.stringify([...prevState.items,
+                    {
+                        name: itemData.name,
+                        count: itemData.count,
+                        minCount: itemData.minCount,
+                    }]));
+
+                this.setState({
+                    "items": [...prevState.items,
+                        {
+                            name: itemData.name,
+                            count: itemData.count,
+                            minCount: itemData.minCount,
+                        }]
+                })
+            } else {
+                localStorage.setItem("items", JSON.stringify([
+                    {
+                        name: itemData.name,
+                        count: itemData.count,
+                        minCount: itemData.minCount,
+                    }]));
+                this.setState({
+                    "items": [...prevState.items,
+                        {
+                            name: itemData.name,
+                            count: itemData.count,
+                            minCount: itemData.minCount,
+                        }]
+                })
+            }
+        });
+        this.closeModal();
     };
 
     render() {
-        const {isModalOpen, editItemData, removeItemData} = this.state;
+        const {isModalOpen, editItemData, removeItemData, addItemData} = this.state;
         const context = {
             ...this.state,
             openModalFn: this.openModal,
-            removeItemFn: this.removeItem
+            removeItemFn: this.removeItem,
+            updateItemFn: this.updateItem,
+            addItemFn: this.addItem
         };
 
         return (
@@ -76,8 +126,11 @@ class Root extends React.Component {
                     <Footer/>
                     {isModalOpen && <Modal editItemData={editItemData}
                                            removeItemData={removeItemData}
-                                           updateItem={this.updateItem}
-                                           closeModalFn={this.closeModal}/>}
+                                           addItemData={addItemData}
+                                           updateItemFn={this.updateItem}
+                                           closeModalFn={this.closeModal}
+                                           removeItemFn={this.removeItem}
+                    />}
                 </AppContext.Provider>
             </BrowserRouter>
         );

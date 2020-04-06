@@ -21,7 +21,7 @@ const ItemList = ({shoppingList, items}) => (
 
         {shoppingList && (
             <div>Kup to:
-                {shoppingList.map((item, index) => ((item.count >= item.minCount) ? <li key={"buy_product_" + index}>{item.name}</li> : null))}
+                {shoppingList.map((item, index) => ((item.count < item.minCount) ? <li key={"buy_product_" + index}>{item.name}</li> : null))}
             </div>
         )}
     </>

@@ -12,10 +12,10 @@ const Item = ({item, itemIndex}) => (
         <td>{item.count}</td>
         <td>
             <button className={styles.button}>
-                <img className={styles.buttonIcon} alt={"edit"} onClick={() => (context.openModalFn(item))} src={editIcon}/>
+                <img className={styles.buttonIcon} alt={"edit"} onClick={() => (context.openModalFn("update",item))} src={editIcon}/>
             </button>
             <button className={styles.button}>
-                <img className={styles.buttonIcon} alt={"delete"} onClick={() => (context.removeItemFn(item))} src={deleteIcon}/>
+                <img className={styles.buttonIcon} alt={"delete"} onClick={() => (context.openModalFn("remove",item))} src={deleteIcon}/>
             </button>
         </td>
     </tr>)}
