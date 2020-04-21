@@ -6,10 +6,11 @@ import confirmButotn from "../../assets/accept-button.png"
 
 class Form extends React.Component {
     state = {
-        name: !this.props.props ? null : this.props.props.name,
-        count: !this.props.props ? null : this.props.props.count,
-        minCount: !this.props.props ? null : this.props.props.minCount,
+        name: this.props.props === "add" ? null : this.props.props.name,
+        count: this.props.props === "add" ? null : this.props.props.count,
+        minCount: this.props.props === "add" ? null : this.props.props.minCount,
     };
+
 
 
     render(){
@@ -18,14 +19,13 @@ class Form extends React.Component {
 
     <AppContext.Consumer>
         {context => (
-
     <form className={styles.wrapper}
           autoComplete="off"
           onSubmit={!this.props.props
               ? ((e) => context.addItemFn(e, this.state))
               : ((e) => context.updateItemFn(e, this.props.props, this.state))}>
 
-
+        {console.log(this.state)}
 
         <input className={styles.input}
                required
@@ -39,7 +39,7 @@ class Form extends React.Component {
                required
                type={"text"}
                defaultValue={this.props.props ? this.props.props.count : ""}
-               onChange={(e) => this.setState({count:e.target.value})}
+               onChange={(e) => this.setState({count:e.target.value}) }
                name={"count"}
                placeholder={"Aktualna ilość"}/>
 

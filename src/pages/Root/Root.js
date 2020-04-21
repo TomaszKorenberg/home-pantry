@@ -49,36 +49,28 @@ class Root extends React.Component {
     removeItem = (itemData) => {
         const items = JSON.parse(localStorage.getItem("items")).filter(item => item.name !== itemData.name);
         localStorage.setItem("items", JSON.stringify(items));
-        this.setState({"items": items})
+        this.setState({"items": items});
         this.closeModal();
     };
 
     updateItem = (e,itemData, newItemValues) => {
         e.preventDefault();
-        console.log("Update FN");
 
         const updateItemIndex = this.state.items.findIndex(key => key.name === itemData.name);
-        const updatedItem = [...this.state.items];
-        //console.log(updatedItem[updateItemIndex])
+        const updatedItems = [...this.state.items];
 
-        updatedItem[updateItemIndex] = {
-            name: !newItemValues ? itemData.name : newItemValues.name,
-            count: !newItemValues ? itemData.count : newItemValues.count,
-            minCount: !newItemValues ? itemData.minCount : newItemValues.minCount
-        }
-        //console.log(updatedItem[updateItemIndex])
-        console.log(itemData.name)
-        console.log(newItemValues.name)
+        updatedItems[updateItemIndex] = {
+            name: !newItemValues.name ? itemData.name : newItemValues.name,
+            count: !newItemValues.count ? itemData.count : newItemValues.count,
+            minCount: !newItemValues.minCount ? itemData.minCount : newItemValues.minCount
+        };
 
-
-
-        //console.log(this.state.items[updateItemIndex])
 
         // const updatedItems = [...this.state.items[updateItemIndex], itemData];
 
-        // this.setState(prevState => ({"items": updatedItems }));
-        // localStorage.setItem("items", JSON.stringify(updatedItems));
-        // this.closeModal();
+        this.setState(prevState => ({"items": updatedItems }));
+        localStorage.setItem("items", JSON.stringify(updatedItems));
+        this.closeModal();
 
 
     };

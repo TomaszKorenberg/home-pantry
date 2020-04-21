@@ -59,7 +59,7 @@ const Modal = ({closeModalFn, editItemData, removeItemData, addItemData, removeI
                 </button>
                 Dodaj nowy produkt:
                 <br/>
-                <Form/>
+                <Form props={"add"}/>
 
             </div>
             )}
